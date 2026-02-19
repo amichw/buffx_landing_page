@@ -1,6 +1,6 @@
-@import "../src/styles/fonts.css";
-@import "../src/styles/tailwind.css";
-@import "../src/styles/theme.css";
+@import "./styles/fonts.css";
+@import "./styles/tailwind.css";
+@import "./styles/theme.css";
 
 /* Smooth scrolling for the entire page */
 html {
