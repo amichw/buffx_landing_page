@@ -1,11 +1,24 @@
+# Buffx Landing Page
 
-  # Landing page design
+Next.js 14 (App Router, TypeScript) implementation of the Buffx landing page.
 
-  This is a code bundle for Landing page design. The original project is available at https://www.figma.com/design/QCyF7VVTk9UnPUCDmKJ0B7/Landing-page-design.
+## Requirements
 
-  ## Running the code
+- Node.js 18+
+- npm
 
-  Run `npm i` to install the dependencies.
+## Run Locally
 
-  Run `npm run dev` to start the development server.
-  
+```bash
+npm install
+npm run dev
+```
+
+Open `http://localhost:3000`.
+
+## Production Build
+
+```bash
+npm run build
+npm run start
+```
