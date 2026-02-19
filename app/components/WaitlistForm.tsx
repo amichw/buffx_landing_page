@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
+import { getSupabaseBrowserClient } from '../../lib/supabase';
 
 export function WaitlistForm() {
   const [formData, setFormData] = useState({
@@ -10,15 +11,47 @@ export function WaitlistForm() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+
+    if (isSubmitting) {
+      return;
+    }
+
+    const supabase = getSupabaseBrowserClient();
+    const tableName = process.env.NEXT_PUBLIC_SUPABASE_WAITLIST_TABLE ?? 'waitlist_submissions';
+
+    if (!supabase) {
+      console.error('Missing Supabase environment variables');
+      alert('שגיאת מערכת: חסרים פרטי חיבור. נסי שוב מאוחר יותר.');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const { error } = await supabase.from(tableName).insert({
+      full_name: formData.fullName,
+      phone: formData.phone,
+      email: formData.email,
+      has_divorce_doc: formData.hasDivorceDoc,
+      submitted_at: new Date().toISOString()
+    });
+
+    if (error) {
+      console.error('Supabase insert error:', error);
+      alert('אירעה שגיאה בשליחת הטופס. נסי שוב בעוד רגע.');
+      setIsSubmitting(false);
+      return;
+    }
+
     setSubmitted(true);
     
     // Reset after 3 seconds
     setTimeout(() => {
       setSubmitted(false);
+      setIsSubmitting(false);
       setFormData({
         fullName: '',
         phone: '',
@@ -257,6 +290,7 @@ export function WaitlistForm() {
                 {/* Submit Button with gradient */}
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="w-full py-5 rounded-full text-lg font-bold transition-all hover:scale-105 flex items-center justify-center gap-3 group relative overflow-hidden"
                   style={{ 
                     background: 'linear-gradient(135deg, #05FB90 0%, #B9FEE0 100%)',
@@ -264,7 +298,7 @@ export function WaitlistForm() {
                     boxShadow: '0 20px 60px rgba(5, 251, 144, 0.4), 0 0 40px rgba(5, 251, 144, 0.2)'
                   }}
                 >
-                  <span className="relative z-10">הרשמי לרשימת ההמתנה</span>
+                  <span className="relative z-10">{isSubmitting ? 'שולח...' : 'הרשמי לרשימת ההמתנה'}</span>
                   <ArrowLeft size={24} className="transition-transform group-hover:-translate-x-1 relative z-10" />
                   
                   {/* Hover gradient effect */}
