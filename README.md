@@ -38,3 +38,12 @@ The waitlist form writes to Supabase directly from the browser.
    - `email` (text)
    - `has_divorce_doc` (boolean)
    - `submitted_at` (timestamptz)
+
+## Confirmation Email
+
+After a successful waitlist submission, the app calls a server route that sends a confirmation email using Resend.
+
+Add these server env vars:
+
+- `RESEND_API_KEY`
+- `RESEND_FROM_EMAIL` (must be a verified sender in Resend, e.g. `Buffx <onboarding@yourdomain.com>`)

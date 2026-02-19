@@ -13,6 +13,25 @@ export function WaitlistForm() {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const sendConfirmationEmail = async (fullName: string, email: string) => {
+    try {
+      const response = await fetch('/api/waitlist/confirmation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ fullName, email })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Failed to send confirmation email:', errorText);
+      }
+    } catch (error) {
+      console.error('Confirmation email request failed:', error);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -45,6 +64,8 @@ export function WaitlistForm() {
       setIsSubmitting(false);
       return;
     }
+
+    await sendConfirmationEmail(formData.fullName, formData.email);
 
     setSubmitted(true);
     
