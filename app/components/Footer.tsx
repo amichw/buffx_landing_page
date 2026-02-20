@@ -1,58 +1,42 @@
-import React from 'react';
-import { Shield } from 'lucide-react';
+import { Logo } from "./Logo";
 
 export function Footer() {
   return (
-    <footer 
-      className="py-12 border-t"
-      style={{ 
-        background: 'linear-gradient(180deg, #F0F0FA 0%, #ffffff 100%)',
-        borderColor: '#B9FEE0'
-      }}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="mb-6">
-          <span className="text-3xl font-bold">
-            <span style={{ color: '#0F172A' }}>BUFF</span>
-            <span 
-              style={{ 
-                background: 'linear-gradient(135deg, #05FB90 0%, #B9FEE0 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}
-            >
-              X
-            </span>
-          </span>
-        </div>
-        
-        <p className="mb-4 text-lg" style={{ color: '#0F172A', opacity: 0.7 }}>
-          הטכנולוגיה שמנהלת את המזונות, כדי שאת לא תצטרכי
-        </p>
-        
-        {/* Israeli Law compliance notice */}
-        <div 
-          className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full"
-          style={{ 
-            backgroundColor: '#F0F0FA',
-            border: '1px solid #B9FEE0'
-          }}
-        >
-          <Shield size={16} style={{ color: '#05FB90' }} />
-          <span className="text-sm font-medium" style={{ color: '#0F172A' }}>
-            פועלים על פי החוק הישראלי
-          </span>
-        </div>
-        
-        <p className="text-sm mb-6" style={{ color: '#0F172A', opacity: 0.5 }}>
-          © 2026 Buffx. כל הזכויות שמורות.
-        </p>
-        
-        <div className="flex items-center justify-center gap-6 text-sm font-medium">
-          <a href="#" className="transition-colors hover:opacity-70" style={{ color: '#0F172A' }}>תנאי שימוש</a>
-          <div className="w-1 h-1 rounded-full" style={{ backgroundColor: '#05FB90' }} />
-          <a href="#" className="transition-colors hover:opacity-70" style={{ color: '#0F172A' }}>מדיניות פרטיות</a>
+    <footer className="relative bg-white pb-12 pt-10 md:pt-12">
+      <div className="mx-auto max-w-6xl px-5 md:px-8">
+        <div className="border-t border-[#0f172a]/10 pt-10 md:pt-12">
+          <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
+            <Logo />
+
+            <div className="flex flex-wrap items-center justify-center gap-8">
+              <a
+                href="https://www.linkedin.com/in/hanna-barr/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#0f172a] opacity-60 transition-opacity hover:opacity-100"
+                aria-label="LinkedIn"
+              >
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                </svg>
+              </a>
+
+              <div className="flex items-center gap-6 font-['Noto_Sans',sans-serif] text-sm text-[#0f172a] opacity-60">
+                <a href="#" className="transition-opacity hover:opacity-100">
+                  Privacy Policy
+                </a>
+                <a href="#" className="transition-opacity hover:opacity-100">
+                  Terms of Service
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 text-center">
+            <p className="font-['Noto_Sans',sans-serif] text-sm text-[#0f172a] opacity-40">
+              © 2026 Buffx. All rights reserved. | Transforming Legal Rulings into Executable Financial Workflows
+            </p>
+          </div>
         </div>
       </div>
     </footer>

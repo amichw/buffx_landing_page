@@ -1,50 +1,48 @@
-import React, { useState } from 'react';
-import { ArrowLeft, CheckCircle } from 'lucide-react';
-import { getSupabaseBrowserClient } from '../../lib/supabase';
+"use client";
+
+import { CheckCircle2 } from "lucide-react";
+import { useState } from "react";
+import { getSupabaseBrowserClient } from "../../lib/supabase";
 
 export function WaitlistForm() {
   const [formData, setFormData] = useState({
-    fullName: '',
-    phone: '',
-    email: '',
-    hasDivorceDoc: false
+    fullName: "",
+    phone: "",
+    email: "",
+    hasDivorceDoc: false,
   });
-
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const sendConfirmationEmail = async (fullName: string, email: string) => {
     try {
-      const response = await fetch('/api/waitlist/confirmation', {
-        method: 'POST',
+      const response = await fetch("/api/waitlist/confirmation", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ fullName, email })
+        body: JSON.stringify({ fullName, email }),
       });
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Failed to send confirmation email:', errorText);
+        console.error("Failed to send confirmation email:", errorText);
       }
     } catch (error) {
-      console.error('Confirmation email request failed:', error);
+      console.error("Confirmation email request failed:", error);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (isSubmitting) {
-      return;
-    }
+    if (isSubmitting) return;
 
     const supabase = getSupabaseBrowserClient();
-    const tableName = process.env.NEXT_PUBLIC_SUPABASE_WAITLIST_TABLE ?? 'waitlist_submissions';
+    const tableName = process.env.NEXT_PUBLIC_SUPABASE_WAITLIST_TABLE ?? "waitlist_submissions";
 
     if (!supabase) {
-      console.error('Missing Supabase environment variables');
-      alert('שגיאת מערכת: חסרים פרטי חיבור. נסי שוב מאוחר יותר.');
+      console.error("Missing Supabase environment variables");
+      alert("System error: missing connection details. Please try again later.");
       return;
     }
 
@@ -55,284 +53,125 @@ export function WaitlistForm() {
       phone: formData.phone,
       email: formData.email,
       has_divorce_doc: formData.hasDivorceDoc,
-      submitted_at: new Date().toISOString()
+      submitted_at: new Date().toISOString(),
     });
 
     if (error) {
-      console.error('Supabase insert error:', error);
-      alert('אירעה שגיאה בשליחת הטופס. נסי שוב בעוד רגע.');
+      console.error("Supabase insert error:", error);
+      alert("Something went wrong while submitting. Please try again in a moment.");
       setIsSubmitting(false);
       return;
     }
 
     await sendConfirmationEmail(formData.fullName, formData.email);
-
     setSubmitted(true);
-    
-    // Reset after 3 seconds
+
     setTimeout(() => {
       setSubmitted(false);
       setIsSubmitting(false);
-      setFormData({
-        fullName: '',
-        phone: '',
-        email: '',
-        hasDivorceDoc: false
-      });
+      setFormData({ fullName: "", phone: "", email: "", hasDivorceDoc: false });
     }, 3000);
   };
 
   return (
-    <section 
-      id="waitlist-form"
-      className="py-24 relative overflow-hidden"
-      style={{ 
-        background: 'linear-gradient(180deg, #0F172A 0%, #1a2332 100%)'
-      }}
-    >
-      {/* Enhanced decorative blobs with gradients */}
-      <div 
-        className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-20 blur-3xl animate-pulse"
-        style={{ 
-          background: 'radial-gradient(circle, #05FB90 0%, #B9FEE0 50%, transparent 100%)'
-        }}
-      />
-      <div 
-        className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full opacity-20 blur-3xl"
-        style={{ 
-          background: 'radial-gradient(circle, #B9FEE0 0%, #05FB90 50%, transparent 100%)'
-        }}
-      />
-      <div 
-        className="absolute top-1/2 left-1/2 w-[300px] h-[300px] rounded-full opacity-10 blur-2xl"
-        style={{ 
-          background: 'radial-gradient(circle, #05FB90 0%, transparent 70%)',
-          transform: 'translate(-50%, -50%)'
-        }}
-      />
-      
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="text-center mb-12">
-          <h2 
-            className="mb-4 text-5xl"
-            style={{ 
-              color: '#ffffff',
-              fontWeight: 800
-            }}
-          >
-            הזמנה להצטרף ל<span 
-              style={{ 
-                background: 'linear-gradient(135deg, #05FB90 0%, #B9FEE0 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}
-            >
-              מהפכה השקטה
-            </span>
-          </h2>
-          
-          <p 
-            className="text-xl"
-            style={{ color: '#B9FEE0' }}
-          >
-            השאירי פרטים ונעדכן אותך ברגע שהמערכת תהיה זמינה
+    <section id="contact" className="relative bg-white py-24 md:py-32">
+      <div className="mx-auto max-w-6xl px-5 md:px-8">
+        <div className="mb-10 text-center md:mb-12">
+          <h2 className="mb-5 font-['Viga',sans-serif] text-4xl text-[#0f172a] md:text-6xl">Let's Connect</h2>
+          <p className="mx-auto max-w-2xl font-['Noto_Sans',sans-serif] text-lg text-[#0f172a] opacity-60 md:text-xl">
+            Join us in transforming the LegalTech and FinTech landscape
           </p>
         </div>
 
-        <div 
-          className="p-10 rounded-3xl relative overflow-hidden"
-          style={{
-            backgroundColor: '#ffffff',
-            boxShadow: '0 30px 80px rgba(5, 251, 144, 0.3), 0 0 60px rgba(5, 251, 144, 0.2)'
-          }}
-        >
-          {/* Animated gradient border */}
-          <div 
-            className="absolute inset-0 rounded-3xl opacity-70"
-            style={{
-              background: 'linear-gradient(135deg, #05FB90 0%, #B9FEE0 50%, #05FB90 100%)',
-              padding: '3px',
-              zIndex: -1
-            }}
-          />
-          <div 
-            className="absolute inset-[3px] bg-white rounded-3xl"
-            style={{ zIndex: 0 }}
-          />
-          
-          <div className="relative z-10">
-            {submitted ? (
-              <div className="text-center py-8">
-                <div 
-                  className="inline-flex p-6 rounded-full mb-6"
-                  style={{ 
-                    background: 'linear-gradient(135deg, #B9FEE0 0%, #05FB90 100%)',
-                    boxShadow: '0 20px 40px rgba(5, 251, 144, 0.4)'
-                  }}
-                >
-                  <CheckCircle size={60} style={{ color: '#0F172A' }} />
-                </div>
-                <h3 
-                  className="text-3xl mb-3"
-                  style={{ color: '#0F172A', fontWeight: 700 }}
-                >
-                  תודה על ההרשמה!
-                </h3>
-                <p className="text-xl" style={{ color: '#0F172A', opacity: 0.7 }}>
-                  נשלח לך עדכון ברגע שהמערכת תהיה זמינה
-                </p>
+        <div className="mx-auto max-w-2xl">
+          {submitted ? (
+            <div className="rounded-3xl border border-[#05fb90]/30 bg-[#f7fff9] p-8 text-center shadow-[0px_20px_60px_0px_rgba(5,251,144,0.15)] md:p-10">
+              <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#05fb90] to-[#b9fee0]">
+                <CheckCircle2 className="h-9 w-9 text-[#0f172a]" />
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Full Name */}
-                <div className="text-right">
-                  <label 
-                    htmlFor="fullName"
-                    className="block mb-2 font-bold"
-                    style={{ color: '#0F172A' }}
-                  >
-                    שם מלא
-                  </label>
-                  <input
-                    type="text"
-                    id="fullName"
-                    required
-                    value={formData.fullName}
-                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    className="w-full px-5 py-4 rounded-xl border-2 focus:outline-none transition-all text-right text-lg"
-                    style={{ 
-                      background: 'linear-gradient(135deg, #F0F0FA 0%, #ffffff 100%)',
-                      borderColor: '#F0F0FA',
-                      color: '#0F172A'
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = '#05FB90';
-                      e.target.style.boxShadow = '0 0 20px rgba(5, 251, 144, 0.2)';
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = '#F0F0FA';
-                      e.target.style.boxShadow = 'none';
-                    }}
-                    placeholder="הזיני את שמך המלא"
-                  />
-                </div>
+              <h3 className="mb-3 font-['Noto_Sans',sans-serif] text-2xl font-bold text-[#0f172a]">You're on the list</h3>
+              <p className="font-['Noto_Sans',sans-serif] text-base text-[#0f172a] opacity-70">
+                Thanks for signing up. We'll update you as soon as access opens.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-6" id="waitlist-form">
+              <div>
+                <label htmlFor="fullName" className="mb-2 block font-['Noto_Sans',sans-serif] text-base font-medium text-[#0f172a]">
+                  Name
+                </label>
+                <input
+                  id="fullName"
+                  type="text"
+                  required
+                  value={formData.fullName}
+                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                  className="w-full rounded-2xl border-2 border-transparent bg-[#f0f0fa] px-6 py-4 font-['Noto_Sans',sans-serif] text-[#0f172a] outline-none transition-colors focus:border-[#05fb90]"
+                  placeholder="Your full name"
+                />
+              </div>
 
-                {/* Phone */}
-                <div className="text-right">
-                  <label 
-                    htmlFor="phone"
-                    className="block mb-2 font-bold"
-                    style={{ color: '#0F172A' }}
-                  >
-                    טלפון נייד
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    required
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-5 py-4 rounded-xl border-2 focus:outline-none transition-all text-right text-lg"
-                    style={{ 
-                      background: 'linear-gradient(135deg, #F0F0FA 0%, #ffffff 100%)',
-                      borderColor: '#F0F0FA',
-                      color: '#0F172A'
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = '#05FB90';
-                      e.target.style.boxShadow = '0 0 20px rgba(5, 251, 144, 0.2)';
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = '#F0F0FA';
-                      e.target.style.boxShadow = 'none';
-                    }}
-                    placeholder="050-1234567"
-                  />
-                </div>
+              <div>
+                <label htmlFor="phone" className="mb-2 block font-['Noto_Sans',sans-serif] text-base font-medium text-[#0f172a]">
+                  Phone
+                </label>
+                <input
+                  id="phone"
+                  type="tel"
+                  required
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className="w-full rounded-2xl border-2 border-transparent bg-[#f0f0fa] px-6 py-4 font-['Noto_Sans',sans-serif] text-[#0f172a] outline-none transition-colors focus:border-[#05fb90]"
+                  placeholder="Your mobile phone"
+                />
+              </div>
 
-                {/* Email */}
-                <div className="text-right">
-                  <label 
-                    htmlFor="email"
-                    className="block mb-2 font-bold"
-                    style={{ color: '#0F172A' }}
-                  >
-                    כתובת אימייל
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-5 py-4 rounded-xl border-2 focus:outline-none transition-all text-right text-lg"
-                    style={{ 
-                      background: 'linear-gradient(135deg, #F0F0FA 0%, #ffffff 100%)',
-                      borderColor: '#F0F0FA',
-                      color: '#0F172A'
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = '#05FB90';
-                      e.target.style.boxShadow = '0 0 20px rgba(5, 251, 144, 0.2)';
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = '#F0F0FA';
-                      e.target.style.boxShadow = 'none';
-                    }}
-                    placeholder="example@email.com"
-                  />
-                </div>
+              <div>
+                <label htmlFor="email" className="mb-2 block font-['Noto_Sans',sans-serif] text-base font-medium text-[#0f172a]">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full rounded-2xl border-2 border-transparent bg-[#f0f0fa] px-6 py-4 font-['Noto_Sans',sans-serif] text-[#0f172a] outline-none transition-colors focus:border-[#05fb90]"
+                  placeholder="your.email@company.com"
+                />
+              </div>
 
-                {/* Checkbox with gradient */}
-                <div 
-                  className="flex items-center gap-3 justify-end p-5 rounded-xl"
-                  style={{ 
-                    background: 'linear-gradient(135deg, #F0F0FA 0%, #ffffff 100%)'
-                  }}
-                >
-                  <label 
-                    htmlFor="hasDivorceDoc"
-                    style={{ color: '#0F172A' }}
-                    className="cursor-pointer font-medium"
-                  >
-                    יש לי פסק דין / הסכם גירושין (לא חובה להעלות כרגע)
-                  </label>
-                  <input
-                    type="checkbox"
-                    id="hasDivorceDoc"
-                    checked={formData.hasDivorceDoc}
-                    onChange={(e) => setFormData({ ...formData, hasDivorceDoc: e.target.checked })}
-                    className="w-6 h-6 rounded cursor-pointer"
-                    style={{ accentColor: '#05FB90' }}
-                  />
-                </div>
+              <label className="flex items-start gap-3 rounded-2xl bg-[#f0f0fa] px-4 py-4 font-['Noto_Sans',sans-serif] text-sm text-[#0f172a]">
+                <input
+                  type="checkbox"
+                  checked={formData.hasDivorceDoc}
+                  onChange={(e) => setFormData({ ...formData, hasDivorceDoc: e.target.checked })}
+                  className="mt-0.5 h-5 w-5 cursor-pointer rounded accent-[#05fb90]"
+                />
+                I already have a divorce ruling/agreement (optional)
+              </label>
 
-                {/* Submit Button with gradient */}
+              <div className="flex flex-col gap-4 pt-2 sm:flex-row">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-5 rounded-full text-lg font-bold transition-all hover:scale-105 flex items-center justify-center gap-3 group relative overflow-hidden"
-                  style={{ 
-                    background: 'linear-gradient(135deg, #05FB90 0%, #B9FEE0 100%)',
-                    color: '#0F172A',
-                    boxShadow: '0 20px 60px rgba(5, 251, 144, 0.4), 0 0 40px rgba(5, 251, 144, 0.2)'
+                  className="flex-1 rounded-full px-10 py-5 font-['Noto_Sans',sans-serif] text-lg font-bold text-[#0f172a] shadow-[0px_23.16px_49.1px_0px_rgba(5,251,144,0.3)] transition-all hover:scale-[1.01] hover:shadow-[0px_28px_60px_0px_rgba(5,251,144,0.4)] disabled:cursor-not-allowed disabled:opacity-70"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(120.485deg, rgb(5, 251, 144) 41.43%, rgb(185, 254, 224) 94.857%)",
                   }}
                 >
-                  <span className="relative z-10">{isSubmitting ? 'שולח...' : 'הרשמי לרשימת ההמתנה'}</span>
-                  <ArrowLeft size={24} className="transition-transform group-hover:-translate-x-1 relative z-10" />
-                  
-                  {/* Hover gradient effect */}
-                  <div 
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                    style={{
-                      background: 'linear-gradient(135deg, #B9FEE0 0%, #05FB90 100%)'
-                    }}
-                  />
+                  {isSubmitting ? "Submitting..." : "Join Waitlist"}
                 </button>
-              </form>
-            )}
-          </div>
+                <a
+                  href="#"
+                  className="flex-1 rounded-full border-2 border-[#00FF9D] bg-white px-10 py-5 text-center font-['Noto_Sans',sans-serif] text-lg font-bold text-[#0f172a] transition-colors hover:bg-[#e5fff4]"
+                >
+                  Request Pitch Deck
+                </a>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </section>

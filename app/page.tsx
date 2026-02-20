@@ -1,24 +1,22 @@
-"use client";
-
-import { Header } from "./components/Header";
-import { HeroSection } from "./components/HeroSection";
-import { PainSection } from "./components/PainSection";
-import { HowItWorksSection } from "./components/HowItWorksSection";
-import { TrustSection } from "./components/TrustSection";
-import { FAQSection } from "./components/FAQSection";
-import { WaitlistForm } from "./components/WaitlistForm";
 import { Footer } from "./components/Footer";
+import { Header } from "./components/Header";
+import { Hero } from "./components/Hero";
+import { MarketOpportunity } from "./components/MarketOpportunity";
+import { Problem } from "./components/Problem";
+import { Solution } from "./components/Solution";
+import { Team } from "./components/Team";
+import { WaitlistForm } from "./components/WaitlistForm";
 
 export default function Page() {
   return (
-    <div className="size-full" dir="rtl">
+    <div className="min-h-screen bg-white">
       <Header />
       <main>
-        <HeroSection />
-        <PainSection />
-        <HowItWorksSection />
-        <TrustSection />
-        <FAQSection />
+        <Hero />
+        <Problem />
+        <Solution />
+        <MarketOpportunity />
+        <Team />
         <WaitlistForm />
       </main>
       <Footer />
