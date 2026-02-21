@@ -2,7 +2,6 @@
 
 import { CheckCircle2 } from "lucide-react";
 import { useState } from "react";
-import { getSupabaseBrowserClient } from "../../lib/supabase";
 
 export function WaitlistForm() {
   const [formData, setFormData] = useState({
@@ -10,66 +9,45 @@ export function WaitlistForm() {
     phone: "",
     email: "",
     hasDivorceDoc: false,
+    companyWebsite: "",
   });
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const sendConfirmationEmail = async (fullName: string, email: string) => {
-    try {
-      const response = await fetch("/api/waitlist/confirmation", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ fullName, email }),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Failed to send confirmation email:", errorText);
-      }
-    } catch (error) {
-      console.error("Confirmation email request failed:", error);
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
 
-    const supabase = getSupabaseBrowserClient();
-    const tableName = process.env.NEXT_PUBLIC_SUPABASE_WAITLIST_TABLE ?? "waitlist_submissions";
-
-    if (!supabase) {
-      console.error("Missing Supabase environment variables");
-      alert("System error: missing connection details. Please try again later.");
-      return;
-    }
-
     setIsSubmitting(true);
 
-    const { error } = await supabase.from(tableName).insert({
-      full_name: formData.fullName,
-      phone: formData.phone,
-      email: formData.email,
-      has_divorce_doc: formData.hasDivorceDoc,
-      submitted_at: new Date().toISOString(),
+    const response = await fetch("/api/waitlist/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fullName: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        hasDivorceDoc: formData.hasDivorceDoc,
+        companyWebsite: formData.companyWebsite,
+      }),
     });
 
-    if (error) {
-      console.error("Supabase insert error:", error);
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Waitlist submission error:", errorText);
       alert("Something went wrong while submitting. Please try again in a moment.");
       setIsSubmitting(false);
       return;
     }
 
-    await sendConfirmationEmail(formData.fullName, formData.email);
     setSubmitted(true);
 
     setTimeout(() => {
       setSubmitted(false);
       setIsSubmitting(false);
-      setFormData({ fullName: "", phone: "", email: "", hasDivorceDoc: false });
+      setFormData({ fullName: "", phone: "", email: "", hasDivorceDoc: false, companyWebsite: "" });
     }, 3000);
   };
 
@@ -150,6 +128,16 @@ export function WaitlistForm() {
                 />
                 I already have a divorce ruling/agreement (optional)
               </label>
+
+              <input
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                value={formData.companyWebsite}
+                onChange={(e) => setFormData({ ...formData, companyWebsite: e.target.value })}
+                className="hidden"
+              />
 
               <div className="flex flex-col gap-4 pt-2 sm:flex-row">
                 <button
