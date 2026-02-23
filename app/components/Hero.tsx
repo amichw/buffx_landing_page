@@ -3,7 +3,7 @@ export function Hero() {
     <section className="relative min-h-[calc(100vh-72px)] overflow-hidden md:min-h-[900px]">
       <video
         src="/assets/header_vid.mp4"
-        className="absolute inset-0 h-full w-full object-cover object-center"
+        className="absolute inset-0 h-full w-full -scale-x-100 object-cover object-center"
         autoPlay
         loop
         muted
