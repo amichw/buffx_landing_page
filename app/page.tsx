@@ -4,8 +4,8 @@ import { Hero } from "./components/Hero";
 import { MarketOpportunity } from "./components/MarketOpportunity";
 import { Problem } from "./components/Problem";
 import { Solution } from "./components/Solution";
-import { Team } from "./components/Team";
-import { WaitlistForm } from "./components/WaitlistForm";
+import { WhyNow } from "./components/WhyNow";
+import { WhyUs } from "./components/WhyUs";
 
 export default function Page() {
   return (
@@ -13,11 +13,11 @@ export default function Page() {
       <Header />
       <main>
         <Hero />
+        <MarketOpportunity />
         <Problem />
         <Solution />
-        <MarketOpportunity />
-        <Team />
-        <WaitlistForm />
+        <WhyNow />
+        <WhyUs />
       </main>
       <Footer />
     </div>

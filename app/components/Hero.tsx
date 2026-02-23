@@ -1,64 +1,37 @@
 export function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden pt-[88px]">
-      <div className="absolute left-[72%] top-[8%] h-[380px] w-[380px] rounded-full bg-[#b9fee0] opacity-25 blur-[110px] md:h-[600px] md:w-[600px]" />
-      <div className="absolute left-[-20%] top-[18%] h-[320px] w-[320px] rounded-full bg-[#05fb90] opacity-20 blur-[95px] md:left-[5%] md:h-[500px] md:w-[500px]" />
+    <section
+      className="relative min-h-[calc(100vh-72px)] overflow-hidden md:min-h-[900px]"
+      style={{
+        backgroundImage:
+          "linear-gradient(122.726deg, rgba(0, 0, 0, 0.36) 1.594%, rgba(0, 0, 0, 0) 80.871%), url('/assets/new-design/ce212ac52395ab37e3d922f972fdac6990a18cbc.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="absolute left-[-20%] top-[10%] h-[260px] w-[260px] rounded-full bg-[#05fb90] opacity-20 blur-[90px] md:left-[6%] md:top-[14%] md:h-[500px] md:w-[500px]" />
 
-      <div className="relative z-10 mx-auto max-w-6xl px-5 py-20 text-center md:px-8 md:py-32">
-        <div className="mb-8 inline-block">
-          <div className="rounded-full bg-[#0f172a] px-6 py-2.5 md:px-8 md:py-3">
-            <p className="font-['Noto_Sans',sans-serif] text-xs font-medium text-[#05fb90] md:text-sm">
-              FinTech x LegalTech Platform
-            </p>
-          </div>
-        </div>
+      <div className="relative z-10 mx-auto max-w-7xl px-5 pb-14 pt-20 md:px-8 md:pb-20 md:pt-28">
+        <div className="max-w-[760px]">
+          <h1 className="font-['Viga',sans-serif] text-[2.25rem] leading-[1.08] text-white md:text-[72px] md:leading-[90px]">
+            A fintech platform for automated collection of child support and shared expenses
+          </h1>
 
-        <h1 className="mb-6 tracking-tight">
-          <span className="block font-['Viga',sans-serif] text-[2.45rem] leading-[1.08] text-[#0f172a] md:text-7xl md:leading-tight">
-            Buffx: Transforming
-          </span>
-          <span
-            className="block bg-clip-text font-['Viga',sans-serif] text-[2.45rem] leading-[1.08] md:text-7xl md:leading-tight"
-            style={{
-              backgroundImage:
-                "linear-gradient(269.839deg, rgb(5, 251, 144) 44.27%, rgb(185, 254, 224) 118.24%)",
-              WebkitTextFillColor: "transparent",
-            }}
+          <p
+            className="mt-6 max-w-[690px] font-['Noto_Sans',sans-serif] text-[1.05rem] leading-8 text-white/90 md:mt-8 md:text-[24px] md:leading-[39px]"
+            style={{ fontVariationSettings: "'CTGR' 100, 'wdth' 100" }}
           >
-            Legal Rulings into
-          </span>
-          <span className="block font-['Viga',sans-serif] text-[2.45rem] leading-[1.08] text-[#0f172a] md:text-7xl md:leading-tight">
-            Executable Financial Workflows
-          </span>
-        </h1>
-
-        <p className="mx-auto mb-10 max-w-4xl font-['Noto_Sans',sans-serif] text-[1.125rem] leading-8 text-[#0f172a] opacity-70 md:mb-12 md:text-2xl md:leading-relaxed">
-          A FinTech platform converting divorce agreements into smart contracts, fully automating the collection of
-          mandatory debts and variable expenses.
-        </p>
-
-        <a
-          href="#contact"
-          className="inline-block rounded-full px-10 py-4 font-['Noto_Sans',sans-serif] text-base font-bold text-[#0f172a] shadow-[0px_23.16px_49.1px_0px_rgba(5,251,144,0.3)] transition-all hover:scale-105 hover:shadow-[0px_28px_60px_0px_rgba(5,251,144,0.4)] md:px-12 md:py-5 md:text-lg"
-          style={{
-            backgroundImage: "linear-gradient(120.485deg, rgb(5, 251, 144) 41.43%, rgb(185, 254, 224) 94.857%)",
-          }}
-        >
-          Join Waitlist
-        </a>
-
-        <div className="mt-10 flex items-center justify-center gap-3 opacity-60 md:mt-12">
-          <svg className="h-5 w-5 text-[#0f172a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-            />
-          </svg>
-          <p className="font-['Noto_Sans',sans-serif] text-center text-xs text-[#0f172a] md:text-sm">
-            Enterprise-Grade Security | Regulatory Compliant | SOC 2 Type II
+            Buffx is the financial layer for divorce agreements - automating child support collection, expense
+            tracking, and enforcement-ready documentation.
           </p>
+
+          <a
+            href="#contact"
+            className="mt-10 inline-flex h-[60px] w-full max-w-[304px] items-center justify-center rounded-full font-['Noto_Sans',sans-serif] text-base font-bold text-[#0f172a] shadow-[0px_23.16px_49.1px_0px_rgba(5,251,144,0.3)] transition-all hover:scale-105 hover:shadow-[0px_28px_60px_0px_rgba(5,251,144,0.4)] md:mt-12 md:h-[68px] md:text-[18px]"
+            style={{ backgroundImage: "linear-gradient(174.092deg, rgb(5, 251, 144) 43.971%, rgb(185, 254, 224) 81.558%)" }}
+          >
+            Schedule Pitch Deck
+          </a>
         </div>
       </div>
     </section>

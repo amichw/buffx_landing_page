@@ -1,10 +1,112 @@
+"use client";
+
+import { useState } from "react";
 import { Logo } from "./Logo";
 
 export function Footer() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    company: "",
+  });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setFormData({ name: "", email: "", company: "" });
+
+    setTimeout(() => {
+      setSubmitted(false);
+    }, 2500);
+  };
+
   return (
-    <footer className="relative bg-white pb-12 pt-10 md:pt-12">
-      <div className="mx-auto max-w-6xl px-5 md:px-8">
-        <div className="border-t border-[#0f172a]/10 pt-10 md:pt-12">
+    <>
+      <section id="contact" className="relative bg-white py-24 md:py-32">
+        <div className="mx-auto max-w-6xl px-5 md:px-8">
+          <div className="mb-10 text-center md:mb-12">
+            <h2 className="mb-6 font-['Viga',sans-serif] text-4xl text-[#0f172a] md:text-6xl">Let's Connect</h2>
+            <p className="mx-auto max-w-2xl font-['Noto_Sans',sans-serif] text-lg text-[#0f172a] opacity-60 md:text-xl">
+              Join us in transforming the LegalTech and FinTech landscape
+            </p>
+          </div>
+
+          <div className="mx-auto max-w-2xl">
+            {submitted ? (
+              <div className="rounded-3xl border border-[#05fb90]/30 bg-[#f7fff9] p-8 text-center shadow-[0px_20px_60px_0px_rgba(5,251,144,0.15)] md:p-10">
+                <h3 className="mb-3 font-['Noto_Sans',sans-serif] text-2xl font-bold text-[#0f172a]">Thanks, we got your details</h3>
+                <p className="font-['Noto_Sans',sans-serif] text-base text-[#0f172a] opacity-70">
+                  We will be in touch soon.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label htmlFor="name" className="mb-2 block font-['Noto_Sans',sans-serif] font-medium text-[#0f172a]">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full rounded-2xl border-2 border-transparent bg-[#f0f0fa] px-6 py-4 font-['Noto_Sans',sans-serif] text-[#0f172a] transition-colors focus:border-[#05fb90] focus:outline-none"
+                    placeholder="Your full name"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="email" className="mb-2 block font-['Noto_Sans',sans-serif] font-medium text-[#0f172a]">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full rounded-2xl border-2 border-transparent bg-[#f0f0fa] px-6 py-4 font-['Noto_Sans',sans-serif] text-[#0f172a] transition-colors focus:border-[#05fb90] focus:outline-none"
+                    placeholder="your.email@company.com"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="company" className="mb-2 block font-['Noto_Sans',sans-serif] font-medium text-[#0f172a]">
+                    Fund / Company
+                  </label>
+                  <input
+                    type="text"
+                    id="company"
+                    required
+                    value={formData.company}
+                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                    className="w-full rounded-2xl border-2 border-transparent bg-[#f0f0fa] px-6 py-4 font-['Noto_Sans',sans-serif] text-[#0f172a] transition-colors focus:border-[#05fb90] focus:outline-none"
+                    placeholder="Your fund or company name"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-4 pt-4 sm:flex-row">
+                  <button
+                    type="submit"
+                    className="flex-1 rounded-full px-10 py-5 font-['Noto_Sans',sans-serif] text-lg font-bold text-[#0f172a] shadow-[0px_23.16px_49.1px_0px_rgba(5,251,144,0.3)] transition-all hover:scale-105 hover:shadow-[0px_28px_60px_0px_rgba(5,251,144,0.4)]"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(120.485deg, rgb(5, 251, 144) 41.43%, rgb(185, 254, 224) 94.857%)",
+                    }}
+                  >
+                    Schedule Pitch Deck
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <footer className="relative bg-[#0f172a] py-12 md:py-16">
+        <div className="mx-auto max-w-6xl px-5 md:px-8">
           <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
             <Logo />
 
@@ -13,7 +115,7 @@ export function Footer() {
                 href="https://www.linkedin.com/in/hanna-barr/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#0f172a] opacity-60 transition-opacity hover:opacity-100"
+                className="text-white opacity-60 transition-opacity hover:opacity-100"
                 aria-label="LinkedIn"
               >
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -21,7 +123,7 @@ export function Footer() {
                 </svg>
               </a>
 
-              <div className="flex items-center gap-6 font-['Noto_Sans',sans-serif] text-sm text-[#0f172a] opacity-60">
+              <div className="flex items-center gap-6 font-['Noto_Sans',sans-serif] text-sm text-white opacity-60">
                 <a href="#" className="transition-opacity hover:opacity-100">
                   Privacy Policy
                 </a>
@@ -33,12 +135,13 @@ export function Footer() {
           </div>
 
           <div className="mt-8 text-center">
-            <p className="font-['Noto_Sans',sans-serif] text-sm text-[#0f172a] opacity-40">
-              © 2026 Buffx. All rights reserved. | Transforming Legal Rulings into Executable Financial Workflows
+            <p className="font-['Noto_Sans',sans-serif] text-sm text-white opacity-40">
+              © 2026 Buffx. All rights reserved. | A fintech platform for automated collection of child support and
+              shared expenses
             </p>
           </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 }
