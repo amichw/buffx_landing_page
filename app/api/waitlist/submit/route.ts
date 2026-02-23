@@ -8,6 +8,7 @@ type WaitlistPayload = {
   phone?: string;
   email?: string;
   hasDivorceDoc?: boolean;
+  companyName?: string;
   companyWebsite?: string;
 };
 
@@ -21,8 +22,19 @@ function normalizePayload(body: WaitlistPayload) {
     phone: body.phone?.trim() ?? "",
     email: body.email?.trim().toLowerCase() ?? "",
     hasDivorceDoc: Boolean(body.hasDivorceDoc),
+    companyName: body.companyName?.trim() ?? "",
     companyWebsite: body.companyWebsite?.trim() ?? "",
   };
+}
+
+function shouldRetryWithoutCompanyName(error: unknown): boolean {
+  if (!error || typeof error !== "object") {
+    return false;
+  }
+
+  const candidate = error as { code?: string; message?: string; details?: string };
+  const text = `${candidate.code ?? ""} ${candidate.message ?? ""} ${candidate.details ?? ""}`.toLowerCase();
+  return text.includes("company_name") || text.includes("column");
 }
 
 export async function POST(request: Request) {
@@ -33,7 +45,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true }, { status: 200 });
   }
 
-  if (!payload.fullName || !payload.phone || !payload.email || !isValidEmail(payload.email)) {
+  if (!payload.fullName || !payload.email || !isValidEmail(payload.email)) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
 
@@ -44,13 +56,28 @@ export async function POST(request: Request) {
       process.env.SUPABASE_WAITLIST_TABLE ?? process.env.NEXT_PUBLIC_SUPABASE_WAITLIST_TABLE ?? "waitlist_submissions";
     const supabase = getSupabaseServerClient();
 
-    const { error } = await supabase.from(tableName).insert({
+    const insertWithCompany = {
       full_name: payload.fullName,
       phone: payload.phone,
       email: payload.email,
       has_divorce_doc: payload.hasDivorceDoc,
+      company_name: payload.companyName,
       submitted_at: submittedAt,
-    });
+    };
+
+    let { error } = await supabase.from(tableName).insert(insertWithCompany);
+
+    if (error && payload.companyName && shouldRetryWithoutCompanyName(error)) {
+      const fallbackInsert = {
+        full_name: payload.fullName,
+        phone: payload.phone,
+        email: payload.email,
+        has_divorce_doc: payload.hasDivorceDoc,
+        submitted_at: submittedAt,
+      };
+      const fallback = await supabase.from(tableName).insert(fallbackInsert);
+      error = fallback.error;
+    }
 
     if (error) {
       console.error("Supabase insert failed:", error);

@@ -8,17 +8,43 @@ export function Footer() {
     name: "",
     email: "",
     company: "",
+    companyWebsite: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setFormData({ name: "", email: "", company: "" });
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
-    setTimeout(() => {
-      setSubmitted(false);
-    }, 2500);
+    const response = await fetch("/api/waitlist/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fullName: formData.name,
+        email: formData.email,
+        phone: "",
+        hasDivorceDoc: false,
+        companyName: formData.company,
+        companyWebsite: formData.companyWebsite,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Footer waitlist submission error:", errorText);
+      alert("Something went wrong while submitting. Please try again in a moment.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    setSubmitted(true);
+    setFormData({ name: "", email: "", company: "", companyWebsite: "" });
+
+    setIsSubmitting(false);
   };
 
   return (
@@ -87,16 +113,27 @@ export function Footer() {
                   />
                 </div>
 
+                <input
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={formData.companyWebsite}
+                  onChange={(e) => setFormData({ ...formData, companyWebsite: e.target.value })}
+                  className="hidden"
+                />
+
                 <div className="flex flex-col gap-4 pt-4 sm:flex-row">
                   <button
                     type="submit"
+                    disabled={isSubmitting}
                     className="flex-1 rounded-full px-10 py-5 font-['Noto_Sans',sans-serif] text-lg font-bold text-[#0f172a] shadow-[0px_23.16px_49.1px_0px_rgba(5,251,144,0.3)] transition-all hover:scale-105 hover:shadow-[0px_28px_60px_0px_rgba(5,251,144,0.4)]"
                     style={{
                       backgroundImage:
                         "linear-gradient(120.485deg, rgb(5, 251, 144) 41.43%, rgb(185, 254, 224) 94.857%)",
                     }}
                   >
-                    Schedule Pitch Deck
+                    {isSubmitting ? "Submitting..." : "Schedule Pitch Deck"}
                   </button>
                 </div>
               </form>
