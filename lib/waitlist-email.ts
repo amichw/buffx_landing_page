@@ -3,6 +3,7 @@ type WaitlistEmailPayload = {
   email: string;
   phone: string;
   hasDivorceDoc: boolean;
+  companyName?: string;
   submittedAt: string;
 };
 
@@ -75,6 +76,7 @@ export async function sendWaitlistNotificationEmail(payload: WaitlistEmailPayloa
       <p><strong>Name:</strong> ${payload.fullName}</p>
       <p><strong>Email:</strong> ${payload.email}</p>
       <p><strong>Phone:</strong> ${payload.phone}</p>
+      <p><strong>Company:</strong> ${payload.companyName ?? ""}</p>
       <p><strong>Has divorce document:</strong> ${payload.hasDivorceDoc ? "Yes" : "No"}</p>
       <p><strong>Submitted at:</strong> ${payload.submittedAt}</p>
     </div>
@@ -86,4 +88,3 @@ export async function sendWaitlistNotificationEmail(payload: WaitlistEmailPayloa
     html,
   });
 }
-

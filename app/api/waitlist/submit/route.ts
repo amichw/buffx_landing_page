@@ -98,6 +98,7 @@ export async function POST(request: Request) {
           phone: payload.phone,
           email: payload.email,
           hasDivorceDoc: payload.hasDivorceDoc,
+          companyName: payload.companyName,
         }),
     },
     {
@@ -116,6 +117,7 @@ export async function POST(request: Request) {
           email: payload.email,
           phone: payload.phone,
           hasDivorceDoc: payload.hasDivorceDoc,
+          companyName: payload.companyName,
           submittedAt,
         }),
     },

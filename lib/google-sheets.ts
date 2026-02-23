@@ -6,6 +6,7 @@ type WaitlistSheetRow = {
   phone: string;
   email: string;
   hasDivorceDoc: boolean;
+  companyName: string;
 };
 
 function toBase64Url(value: string): string {
@@ -91,7 +92,7 @@ export async function appendWaitlistSubmissionToSheet(row: WaitlistSheetRow): Pr
 
   const accessToken = await getGoogleAccessToken();
   const escapedSheetName = sheetName.replace(/'/g, "''");
-  const range = encodeURIComponent(`'${escapedSheetName}'!A:E`);
+  const range = encodeURIComponent(`'${escapedSheetName}'!A:F`);
   const response = await fetch(
     `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
     {
@@ -101,7 +102,7 @@ export async function appendWaitlistSubmissionToSheet(row: WaitlistSheetRow): Pr
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        values: [[row.submittedAt, row.fullName, row.phone, row.email, row.hasDivorceDoc ? "Yes" : "No"]],
+        values: [[row.submittedAt, row.fullName, row.phone, row.email, row.hasDivorceDoc ? "Yes" : "No", row.companyName]],
       }),
     }
   );
