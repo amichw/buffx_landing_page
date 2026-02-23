@@ -1,14 +1,22 @@
 export function Hero() {
   return (
-    <section
-      className="relative min-h-[calc(100vh-72px)] overflow-hidden md:min-h-[900px]"
-      style={{
-        backgroundImage:
-          "linear-gradient(122.726deg, rgba(0, 0, 0, 0.36) 1.594%, rgba(0, 0, 0, 0) 80.871%), url('/assets/new-design/ce212ac52395ab37e3d922f972fdac6990a18cbc.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
+    <section className="relative min-h-[calc(100vh-72px)] overflow-hidden md:min-h-[900px]">
+      <video
+        src="/assets/header_vid.mp4"
+        className="absolute inset-0 h-full w-full object-cover object-center"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: "linear-gradient(122.726deg, rgba(0, 0, 0, 0.36) 1.594%, rgba(0, 0, 0, 0) 80.871%)",
+        }}
+      />
       <div className="absolute left-[-20%] top-[10%] h-[260px] w-[260px] rounded-full bg-[#05fb90] opacity-20 blur-[90px] md:left-[6%] md:top-[14%] md:h-[500px] md:w-[500px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 pb-14 pt-20 md:px-8 md:pb-20 md:pt-28">
