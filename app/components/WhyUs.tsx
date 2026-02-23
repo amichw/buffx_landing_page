@@ -78,12 +78,15 @@ export function WhyUs() {
           <div className="mb-12 grid grid-cols-1 items-center gap-8 md:grid-cols-2">
             <div className="flex justify-center">
               <div className="relative w-full max-w-sm overflow-hidden rounded-2xl shadow-[0px_20px_60px_0px_rgba(0,0,0,0.3)]">
-                <Image
-                  src="/assets/new-design/100d6b0fb35db0415eb68bcdafcd7d2b6e9b1373.png"
-                  alt="Buffx Team"
-                  width={1170}
-                  height={1162}
+                <video
+                  src="/assets/team_vid.mp4"
                   className="h-auto w-full"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  aria-label="Buffx team video"
                 />
               </div>
             </div>
